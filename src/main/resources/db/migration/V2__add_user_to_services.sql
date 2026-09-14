@@ -1,0 +1,6 @@
+ALTER TABLE services
+    ADD COLUMN user_id BIGINT NOT NULL;
+
+ALTER TABLE services
+    ADD CONSTRAINT FK_SERVICES_ON_USER
+        FOREIGN KEY (user_id) REFERENCES users (id);
