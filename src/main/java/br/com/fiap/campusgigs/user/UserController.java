@@ -17,6 +17,7 @@ public class UserController {
     @ResponseStatus(HttpStatus.CREATED)
     public Users save(@RequestBody Users user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setRole("USER");
         return userRepository.save(user);
     }
 }
