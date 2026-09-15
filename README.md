@@ -1,5 +1,9 @@
 # 🎓 Campus Gigs
 
+Nome dos participantes:
+João Victor Nascimento Adão | RM: 563409 | Turma: 2TDSPX
+Johnny Dias Mathias Junior | RM: 566516 | Turma: 2TDSPX
+
 API REST desenvolvida em **Java com Spring Boot** para gerenciamento de oportunidades acadêmicas e profissionais no ambiente universitário.
 
 O projeto utiliza **Spring Security e JWT** para autenticação, garantindo que endpoints protegidos só possam ser acessados mediante um token válido.
@@ -232,6 +236,68 @@ O payload do token contém informações como:
 ```
 
 Isso demonstra que o usuário autenticado recebeu um token JWT associado ao seu perfil de administrador.
+
+## 🔒 Evidência — Forbidden ao editar serviço de outro usuário
+
+O endpoint de atualização de serviços possui uma regra de autorização que permite que **somente o proprietário do serviço** realize alterações.
+
+### Endpoint
+
+```http
+PUT /freela/{id}
+```
+
+### Regra de autorização
+
+Ao realizar uma requisição, o sistema identifica o usuário autenticado através do JWT:
+
+```java
+String username = jwt.getSubject();
+```
+
+Em seguida, verifica se o usuário autenticado é o proprietário do serviço:
+
+```java
+if (!service.getUser().getUsername().equals(username)) {
+    throw new ResponseStatusException(
+            HttpStatus.FORBIDDEN,
+            "Você só pode editar seus próprios serviços"
+    );
+}
+```
+
+Caso o usuário tente editar um serviço pertencente a outro usuário, a API retorna:
+
+```http
+HTTP/1.1 403 Forbidden
+```
+
+com a mensagem:
+
+```text
+Você só pode editar seus próprios serviços
+```
+
+### Cenário do teste
+
+* Usuário autenticado: **usuário A**
+* Serviço: pertencente ao **usuário B**
+* Operação: tentativa de alteração do serviço
+* Endpoint: `PUT /freela/{id}`
+* Resultado esperado: **403 Forbidden**
+
+### Evidência
+
+A imagem abaixo apresenta a requisição realizada com um usuário que **não é proprietário do serviço**, demonstrando que a API bloqueia corretamente a operação.
+
+> **<img width="966" height="268" alt="image" src="https://github.com/user-attachments/assets/dc303fea-4adb-4aa8-9243-da22a7f6d93b" />**
+
+### Resultado
+
+O teste comprova que a API possui controle de autorização baseado no proprietário do recurso. Mesmo estando autenticado e possuindo um JWT válido, o usuário **não pode editar serviços pertencentes a outros usuários**.
+
+**Resultado esperado:** `403 Forbidden` ✅
+
 
 ### 👤 Usuário comum
 
