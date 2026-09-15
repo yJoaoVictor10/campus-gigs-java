@@ -195,6 +195,100 @@ Authorization: Bearer eyJhbGciOiJSUzI1NiJ9...
 
 O token deve ser substituído pelo JWT efetivamente retornado pelo processo de autenticação.
 
+## 🧪 Evidências de autenticação — Insomnia
+
+As requisições abaixo demonstram o funcionamento do processo de autenticação da API utilizando **Insomnia**.
+
+O cadastro de usuários foi realizado com diferentes perfis, permitindo validar a emissão de JWTs com diferentes roles.
+
+### 👤 Usuário administrador
+
+Requisição de cadastro/login utilizando um usuário com perfil `ADMIN`:
+
+```json
+{
+  "username": "jack",
+  "email": "jack@email.com",
+  "password": "123456"
+}
+```
+
+A API retornou um JWT contendo, entre outras informações, a role `ADMIN`:
+
+```json
+{
+  "token": "eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJmaWFwLWdpZ3MtYXBpIiwic3ViIjoiamFjayIsInJvbGUiOiJBRE1JTiIs..."
+}
+```
+
+O payload do token contém informações como:
+
+```json
+{
+  "iss": "fiap-gigs-api",
+  "sub": "jack",
+  "role": "ADMIN"
+}
+```
+
+Isso demonstra que o usuário autenticado recebeu um token JWT associado ao seu perfil de administrador.
+
+### 👤 Usuário comum
+
+Também foi realizado o cadastro/login de um usuário com perfil `USER`:
+
+```json
+{
+  "username": "mariaa",
+  "email": "mariaa@email.com",
+  "password": "123456",
+  "cep": "00000000"
+}
+```
+
+A API retornou um JWT contendo a role `USER`:
+
+```json
+{
+  "token": "eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJmaWFwLWdpZ3MtYXBpIiwic3ViIjoibWFyaWFhIiwicm9sZSI6IlVTRVIi..."
+}
+```
+
+O payload do token contém:
+
+```json
+{
+  "iss": "fiap-gigs-api",
+  "sub": "mariaa",
+  "role": "USER"
+}
+```
+
+### 🔐 Utilização do JWT
+
+Após a autenticação, o token retornado pela API deve ser utilizado nas requisições aos endpoints protegidos através do header:
+
+```http
+Authorization: Bearer <SEU_TOKEN>
+```
+
+No Insomnia, a configuração pode ser feita adicionando o token na aba de autenticação da requisição ou diretamente no header:
+
+| Key             | Value                |
+| --------------- | -------------------- |
+| `Authorization` | `Bearer <SEU_TOKEN>` |
+
+Essas evidências demonstram:
+
+* cadastro/autenticação de usuários;
+* emissão de JWT;
+* identificação do usuário através da claim `sub`;
+* identificação do perfil através da claim `role`;
+* utilização do token para acesso aos endpoints protegidos;
+* diferenciação entre usuários com perfil `ADMIN` e `USER`.
+
+
+
 ## 🛡️ Proteção dos endpoints
 
 Os endpoints protegidos utilizam o mecanismo de segurança do Spring Security.
