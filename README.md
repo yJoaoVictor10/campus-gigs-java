@@ -1,8 +1,12 @@
 # 🎓 Campus Gigs
 
 Nome dos participantes:
+
 João Victor Nascimento Adão | RM: 563409 | Turma: 2TDSPX
+
 Johnny Dias Mathias Junior | RM: 566516 | Turma: 2TDSPX
+
+
 
 API REST desenvolvida em **Java com Spring Boot** para gerenciamento de oportunidades acadêmicas e profissionais no ambiente universitário.
 
