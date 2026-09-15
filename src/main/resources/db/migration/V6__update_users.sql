@@ -1,0 +1,5 @@
+ALTER TABLE users
+    ADD COLUMN location VARCHAR(100);
+
+ALTER TABLE users
+    ADD COLUMN uf VARCHAR(2);

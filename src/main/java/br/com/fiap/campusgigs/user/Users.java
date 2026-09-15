@@ -8,6 +8,7 @@ import lombok.Data;
 @Data
 @Entity
 public class Users {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -21,6 +22,10 @@ public class Users {
     private String password;
 
     private String cep;
+
+    private String location;
+
+    private String uf;
 
     @Pattern(regexp = "ADMIN|USER")
     private String role;
